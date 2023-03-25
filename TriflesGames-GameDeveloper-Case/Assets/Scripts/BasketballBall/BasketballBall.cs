@@ -35,11 +35,8 @@ public class BasketballBall : MonoBehaviour
         }
         else
         {
-            if (GameManager.GameManager.instance.CheckStarted())
-            {
-                float rnd = Random.Range(-1.0f, 1.0f);
-                m_rigidbody.velocity = (Vector3.up + new Vector3(rnd, 0, 0)) * (jumpValue - 1);
-            }
+            float rnd = Random.Range(-1.0f, 1.0f);
+            m_rigidbody.velocity = (Vector3.up + new Vector3(rnd, 0, 0)) * (jumpValue - 1);
         }
     }
 }
