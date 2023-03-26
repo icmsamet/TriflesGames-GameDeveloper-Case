@@ -1,42 +1,61 @@
 using UnityEngine;
 
-public class BasketballBall : MonoBehaviour
+namespace BasketballBall
 {
-    public float jumpValue = 8f;
-    private Rigidbody m_rigidbody;
-    private DynamicJoystick m_dynamicJoystick;
-
-    void Start()
+    public class BasketballBall : MonoBehaviour
     {
-        m_dynamicJoystick = FindObjectOfType<DynamicJoystick>();
-        m_rigidbody = GetComponent<Rigidbody>();
-    }
-    private void FixedUpdate()
-    {
-        ClampPos();
-    }
-    private void ClampPos()
-    {
-        Vector3 currentLocalPos = transform.localPosition;
+        private BasketballBallRigidbody m_ballRigidbody;
 
-        currentLocalPos.x = Mathf.Clamp(currentLocalPos.x, -1, 1);
-        currentLocalPos.z = Mathf.Clamp(currentLocalPos.z, -1, -1);
+        public float jumpValue = 8f;
+        private Rigidbody m_rigidbody;
+        private DynamicJoystick m_dynamicJoystick;
+        private PhysicMaterial m_physicMaterial;
 
-        transform.localPosition = currentLocalPos;
-    }
-    void OnCollisionEnter(Collision collision)
-    {
-        var value = (10 * (-1 * m_dynamicJoystick.Vertical));
-        value = Mathf.Clamp(value,0,10);
-
-        if(value > 0)
+        void Start()
         {
-            m_rigidbody.velocity = Vector3.up * (jumpValue + value);
+            m_dynamicJoystick = FindObjectOfType<DynamicJoystick>();
+            m_rigidbody = GetComponent<Rigidbody>();
+            m_ballRigidbody = new BasketballBallRigidbody(m_rigidbody);
+            m_ballRigidbody.Force = m_ballRigidbody.AddRandomForce(jumpValue);
         }
-        else
+        private void FixedUpdate()
         {
-            float rnd = Random.Range(-1.0f, 1.0f);
-            m_rigidbody.velocity = (Vector3.up + new Vector3(rnd, 0, 0)) * (jumpValue - 1);
+            ClampPos();
+        }
+        private void OnCollisionEnter(Collision collision)
+        {
+            var swipeValue = (10 * (-1 * m_dynamicJoystick.Vertical));
+            swipeValue = Mathf.Clamp(swipeValue, 0, 10);
+            if (swipeValue > 0)
+            {
+                if (collision.gameObject.name == "Ground")
+                {
+                    m_ballRigidbody.Force = Vector3.up * jumpValue;
+                }
+                else
+                {
+                    m_ballRigidbody.Force = Vector3.down * (jumpValue + swipeValue);
+                }
+                SetPhysicMaterialBounciness(1f);
+            }
+            else
+            {
+                SetPhysicMaterialBounciness(0.965f);
+            }
+            m_ballRigidbody.ClampVelocity(5);
+        }
+        private void SetPhysicMaterialBounciness(float value)
+        {
+            m_physicMaterial.bounciness = value;
+        }
+        private void ClampPos()
+        {
+            Vector3 currentLocalPos = transform.localPosition;
+
+            currentLocalPos.x = Mathf.Clamp(currentLocalPos.x, -1, 1);
+            currentLocalPos.z = Mathf.Clamp(currentLocalPos.z, -1, -1);
+
+            transform.localPosition = currentLocalPos;
         }
     }
 }

@@ -12,7 +12,6 @@ public class ToiletPaperMovement
         m_transform = _transform;
         m_clamp = _clamp;
     }
-
     public void Move(string id, UnityAction<bool> startAction)
     {
         m_transform.rotation = Quaternion.Euler(Vector3.zero);
@@ -65,5 +64,10 @@ public class ToiletPaperMovement
         currentLocalPos.z = Mathf.Clamp(currentLocalPos.z, -1, -1);
 
         m_transform.localPosition = currentLocalPos;
+    }
+    public Quaternion LocalRotation
+    {
+        get { return m_transform.localRotation; }
+        set { m_transform.localRotation = value; }
     }
 }

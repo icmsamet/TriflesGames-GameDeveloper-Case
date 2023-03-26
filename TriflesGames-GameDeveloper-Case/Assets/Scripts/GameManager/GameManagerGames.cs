@@ -12,7 +12,6 @@ namespace GameManager
             m_toiletPaperGame = _toiletPaperGame;
             m_basketballBallGame = _basketballBallGame;
         }
-
         public void SetGame()
         {
             m_toiletPaperGame.SetActive(!m_toiletPaperGame.activeSelf);

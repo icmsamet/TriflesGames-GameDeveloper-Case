@@ -10,7 +10,6 @@ namespace GameManager
         {
             m_timer = _timer;
         }
-
         public void SetTimer(int value)
         {
             m_timer.startTime = value;

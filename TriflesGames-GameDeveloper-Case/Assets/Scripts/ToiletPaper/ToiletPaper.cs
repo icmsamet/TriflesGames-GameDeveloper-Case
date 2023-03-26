@@ -6,11 +6,11 @@ namespace ToiletPaper
     [RequireComponent(typeof(Rigidbody))]
     public class ToiletPaper : MonoBehaviour
     {
-        private ToiletPaperRigidbody m_rigidbody;
-        private ToiletPaperMovement m_movement;
+        private ToiletPaperRigidbody m_toiletRigidbody;
+        private ToiletPaperMovement m_toiletMovement;
 
         private SwipeListener m_swipeListener;
-        private Rigidbody m_myRb;
+        private Rigidbody m_rigidbody;
         [SerializeField] private bool m_isMoving;
         [SerializeField] private Vector2 m_clamp;
 
@@ -19,31 +19,17 @@ namespace ToiletPaper
             m_swipeListener = FindObjectOfType<SwipeListener>();
             m_swipeListener.OnSwipe.AddListener(OnSwipeHandler);
 
-            m_myRb = GetComponent<Rigidbody>();
-            m_rigidbody = new ToiletPaperRigidbody(m_myRb, m_swipeListener);
-            m_rigidbody.StartGame();
+            m_rigidbody = GetComponent<Rigidbody>();
+            m_toiletRigidbody = new ToiletPaperRigidbody(m_rigidbody, m_swipeListener);
+            m_toiletRigidbody.StartGame();
 
-            m_movement = new ToiletPaperMovement(this.transform,m_clamp);
+            m_toiletMovement = new ToiletPaperMovement(this.transform,m_clamp);
             SetMoving(false);
         }
         private void FixedUpdate()
         {
             if(m_isMoving)
-                m_movement.Clamp();
-        }
-        public void OnSwipeHandler(string id)
-        {
-            if (!m_isMoving && this.gameObject.activeSelf)
-            {
-                transform.tag = "ToiletPaper";
-                m_rigidbody.Velocity(id);
-                m_movement.Move(id, SetMoving);
-                transform.SetParent(null);
-            }
-        }
-        public void SetMoving(bool value)
-        {
-            m_isMoving = value;
+                m_toiletMovement.Clamp();
         }
         private void OnCollisionEnter(Collision collision)
         {
@@ -51,8 +37,23 @@ namespace ToiletPaper
             {
                 transform.tag = "Untagged";
                 transform.SetParent(collision.transform);
+                m_toiletMovement.LocalRotation = Quaternion.Euler(Vector3.zero);
                 SetMoving(false);
             }
+        }
+        public void OnSwipeHandler(string id)
+        {
+            if (!m_isMoving && this.gameObject.activeSelf)
+            {
+                transform.tag = "ToiletPaper";
+                m_toiletRigidbody.Velocity(id);
+                m_toiletMovement.Move(id, SetMoving);
+                transform.SetParent(null);
+            }
+        }
+        public void SetMoving(bool value)
+        {
+            m_isMoving = value;
         }
     }
 }
