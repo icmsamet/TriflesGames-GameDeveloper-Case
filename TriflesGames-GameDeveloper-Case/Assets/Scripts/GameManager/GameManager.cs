@@ -23,6 +23,7 @@ namespace GameManager
         }
         private void Start()
         {
+            Application.targetFrameRate = 60;
             m_managerTimer = new GameManagerTimer(m_timer);
             m_managerGames = new GameManagerGames(m_toiletPaperGame, m_basketballBallGame);
             SetTimer();

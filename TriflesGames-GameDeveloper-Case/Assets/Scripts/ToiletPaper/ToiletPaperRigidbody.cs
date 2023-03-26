@@ -12,6 +12,11 @@ namespace ToiletPaper
             m_rigidbody = _rigidbody;
             m_swipeListener = _swipeListener;
         }
+        private Vector3 velocity
+        {
+            get { return m_rigidbody.velocity; }
+            set { m_rigidbody.velocity = value; }
+        }
         public void SetConstraints(RigidbodyConstraints constraints)
         {
             m_rigidbody.constraints = constraints;
@@ -19,11 +24,6 @@ namespace ToiletPaper
         public void StartGame()
         {
             SetConstraints(RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ);
-        }
-        public Vector3 velocity
-        {
-            get { return m_rigidbody.velocity; }
-            set { m_rigidbody.velocity = value; }
         }
         public void Velocity(string id)
         {

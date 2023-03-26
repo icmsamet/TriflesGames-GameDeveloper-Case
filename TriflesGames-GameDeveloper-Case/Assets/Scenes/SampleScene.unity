@@ -1708,6 +1708,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpValue: 8
+  m_physicMaterial: {fileID: 13400000, guid: 9b48cdea7d527d146a7ea3be58340f72, type: 2}
 --- !u!114 &4603163131572986372
 MonoBehaviour:
   m_ObjectHideFlags: 0

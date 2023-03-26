@@ -9,7 +9,7 @@ namespace BasketballBall
         public float jumpValue = 8f;
         private Rigidbody m_rigidbody;
         private DynamicJoystick m_dynamicJoystick;
-        private PhysicMaterial m_physicMaterial;
+        [SerializeField] private PhysicMaterial m_physicMaterial;
 
         void Start()
         {
@@ -37,10 +37,16 @@ namespace BasketballBall
                     m_ballRigidbody.Force = Vector3.down * (jumpValue + swipeValue);
                 }
                 SetPhysicMaterialBounciness(1f);
+                m_ballRigidbody.Constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
             }
             else
             {
                 SetPhysicMaterialBounciness(0.965f);
+                m_ballRigidbody.Constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+                if(m_ballRigidbody.Velocity.x !>= 0.3f)
+                {
+                    m_ballRigidbody.Force = m_ballRigidbody.AddRandomForce(jumpValue);
+                }
             }
             m_ballRigidbody.ClampVelocity(5);
         }
