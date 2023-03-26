@@ -16,10 +16,3 @@ The mechanics of "Toilet Paper" and "Basketball Ball", which are mini-games in t
 
 ## About Project
 This project was developed using the Unity game engine and the C# programming language. The game's models used simple objects in Unity.
-
-### Toilet Paper
-https://user-images.githubusercontent.com/76155610/227723855-6e09c43d-3a59-4d48-8671-3b962da2d4bc.mp4
-
-### Basketball Ball
-https://user-images.githubusercontent.com/76155610/227723854-0d9ffd6d-eca8-45aa-8ccd-9478b47f49b4.mp4 
-
